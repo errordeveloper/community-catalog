@@ -1,0 +1,8 @@
+.catalog:
+  name: "Weave Cloud"
+  version: "latest"
+  questions:
+    - variable: "WEAVE_CLOUD_SERVICE_TOKEN"
+      label: "Weave Cloud service token"
+      required: true
+      type: "string"
