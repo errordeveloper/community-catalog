@@ -15,7 +15,7 @@ metadata:
           },
           "email-address": "support@weave.works"
         }
-  spec:
+spec:
     ports:
       - name: agent
         port: 80
