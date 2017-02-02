@@ -1,0 +1,30 @@
+metadata:
+    labels:
+      app: weave-cortex
+      name: weave-cortex-agent
+      weave-cloud-component: cortex
+      weave-cortex-component: agent
+    name: weave-cortex-agent
+    annotations:
+      cloud.weave.works/launcher-info: |-
+        {
+          "server-version": "master-dfc026b",
+          "original-request": {
+            "url": "/k8s.yaml?t=REDACTED&weave-scope-version=1.1.0",
+            "date": "Thu Feb 02 2017 18:23:01 GMT+0000 (UTC)"
+          },
+          "email-address": "support@weave.works"
+        }
+  spec:
+    ports:
+      - name: agent
+        port: 80
+        targetPort: 80
+        protocol: TCP
+    selector:
+      app: weave-cortex
+      name: weave-cortex-agent
+      weave-cloud-component: cortex
+      weave-cortex-component: agent
+apiVersion: v1
+kind: Service

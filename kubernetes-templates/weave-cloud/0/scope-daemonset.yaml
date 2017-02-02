@@ -1,0 +1,54 @@
+metadata:
+    labels:
+      app: weave-scope
+      name: weave-scope-agent
+      weave-cloud-component: scope
+      weave-scope-component: agent
+    name: weave-scope-agent
+    annotations:
+      cloud.weave.works/launcher-info: |-
+        {
+          "server-version": "master-dfc026b",
+          "original-request": {
+            "url": "/k8s.yaml?t=REDACTED&weave-scope-version=1.1.0",
+            "date": "Thu Feb 02 2017 18:23:01 GMT+0000 (UTC)"
+          },
+          "email-address": "support@weave.works"
+        }
+  spec:
+    template:
+      metadata:
+        labels:
+          app: weave-scope
+          name: weave-scope-agent
+          weave-cloud-component: scope
+          weave-scope-component: agent
+      spec:
+        containers:
+          - name: agent
+            image: 'weaveworks/scope:latest'
+            imagePullPolicy: IfNotPresent
+            args:
+              - '--no-app'
+              - '--probe.docker.bridge=docker0'
+              - '--probe.docker=true'
+              - '--probe.kubernetes=true'
+              - "--service-token=${WEAVE_CLOUD_SERVICE_TOKEN}"
+            securityContext:
+              privileged: true
+            volumeMounts:
+              - name: docker-socket
+                mountPath: /var/run/docker.sock
+              - name: scope-plugins
+                mountPath: /var/run/scope/plugins
+        volumes:
+          - name: docker-socket
+            hostPath:
+              path: /var/run/docker.sock
+          - name: scope-plugins
+            hostPath:
+              path: /var/run/scope/plugins
+        hostPID: true
+        hostNetwork: true
+apiVersion: extensions/v1beta1
+kind: DaemonSet
