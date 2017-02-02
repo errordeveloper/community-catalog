@@ -1,46 +1,46 @@
-metadata:
-    labels:
-      app: weave-cortex
-      name: weave-cortex-agent
-      weave-cloud-component: cortex
-      weave-cortex-component: agent
-    name: weave-cortex-agent
-    annotations:
-      cloud.weave.works/launcher-info: |-
-        {
-          "server-version": "master-dfc026b",
-          "original-request": {
-            "url": "/k8s.yaml?t=REDACTED&weave-scope-version=1.1.0",
-            "date": "Thu Feb 02 2017 18:23:01 GMT+0000 (UTC)"
-          },
-          "email-address": "support@weave.works"
-        }
-  spec:
-    template:
-      metadata:
-        labels:
-          app: weave-cortex
-          name: weave-cortex-agent
-          weave-cloud-component: cortex
-          weave-cortex-component: agent
-      spec:
-        containers:
-          - name: agent
-            image: 'prom/prometheus:v1.3.1'
-            imagePullPolicy: IfNotPresent
-            args:
-              - '-config.file=/etc/prometheus/prometheus.yml'
-              - '-web.listen-address=:80'
-            ports:
-              - containerPort: 80
-                protocol: TCP
-            volumeMounts:
-              - name: agent-config-volume
-                mountPath: /etc/prometheus
-        volumes:
-          - name: agent-config-volume
-            configMap:
-              name: weave-cortex-agent-config
-    replicas: 1
 apiVersion: extensions/v1beta1
 kind: Deployment
+metadata:
+  labels:
+    app: weave-cortex
+    name: weave-cortex-agent
+    weave-cloud-component: cortex
+    weave-cortex-component: agent
+  name: weave-cortex-agent
+  annotations:
+    cloud.weave.works/launcher-info: |-
+      {
+        "server-version": "master-dfc026b",
+        "original-request": {
+          "url": "/k8s.yaml?t=REDACTED&weave-scope-version=1.1.0",
+          "date": "Thu Feb 02 2017 18:23:01 GMT+0000 (UTC)"
+        },
+        "email-address": "support@weave.works"
+      }
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: weave-cortex
+        name: weave-cortex-agent
+        weave-cloud-component: cortex
+        weave-cortex-component: agent
+    spec:
+      containers:
+        - name: agent
+          image: 'prom/prometheus:v1.3.1'
+          imagePullPolicy: IfNotPresent
+          args:
+            - '-config.file=/etc/prometheus/prometheus.yml'
+            - '-web.listen-address=:80'
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: agent-config-volume
+              mountPath: /etc/prometheus
+      volumes:
+        - name: agent-config-volume
+          configMap:
+            name: weave-cortex-agent-config
